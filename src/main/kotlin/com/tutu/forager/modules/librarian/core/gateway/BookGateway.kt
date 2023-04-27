@@ -8,5 +8,9 @@ interface BookGateway {
 
     suspend fun getBooks(): Result<List<Book>>
 
+    suspend fun insert(book: Book): Result<Unit>
+
     suspend fun update(book: Book): Result<Unit>
+
+    suspend fun delete(id: String): Result<Unit>
 }

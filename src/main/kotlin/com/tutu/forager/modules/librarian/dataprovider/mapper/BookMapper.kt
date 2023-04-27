@@ -3,6 +3,7 @@ package com.tutu.forager.modules.librarian.dataprovider.mapper
 import com.tutu.forager.modules.librarian.core.domain.Book
 import com.tutu.forager.modules.librarian.dataprovider.database.entity.BookEntity
 import com.tutu.forager.modules.librarian.dataprovider.database.entity.Books
+import com.tutu.forager.modules.librarian.dataprovider.database.entity.TransientBookEntity
 import com.tutu.forager.modules.librarian.dataprovider.dto.book.BookResponse
 import com.tutu.forager.util.response.ListResponse
 import kotlinx.datetime.toKotlinLocalDateTime
@@ -17,7 +18,7 @@ class BookMapper {
 
         private fun Book.toResponse() : BookResponse {
             return BookResponse(
-                id = id,
+                id = id!!,
                 name = name,
                 currentChapter = currentChapter,
                 externalId = externalId,
@@ -43,12 +44,21 @@ class BookMapper {
 
         fun Book.toEntity(): BookEntity {
             return BookEntity(
-                id = id,
+                id = id!!,
                 name = name,
                 currentChapter = currentChapter,
                 externalId = externalId,
                 library = library,
                 ignoreUntil = ignoreUntil
+            )
+        }
+
+        fun Book.toTransientBook(): TransientBookEntity {
+            return TransientBookEntity(
+                name = name,
+                currentChapter = currentChapter,
+                externalId = externalId,
+                library = library,
             )
         }
     }

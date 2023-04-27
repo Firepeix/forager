@@ -5,6 +5,13 @@ import kotlinx.datetime.LocalDateTime
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.javatime.datetime
 
+data class TransientBookEntity(
+    val name: String,
+    val currentChapter: String,
+    val externalId: String,
+    val library: Library,
+)
+
 data class BookEntity(
     val id: String,
     val name: String,

@@ -7,6 +7,7 @@ import com.tutu.forager.modules.librarian.dataprovider.database.repository.BookR
 import com.tutu.forager.modules.librarian.dataprovider.mapper.BookMapper.Companion.toBook
 import com.tutu.forager.modules.librarian.dataprovider.mapper.BookMapper.Companion.toBooks
 import com.tutu.forager.modules.librarian.dataprovider.mapper.BookMapper.Companion.toEntity
+import com.tutu.forager.modules.librarian.dataprovider.mapper.BookMapper.Companion.toTransientBook
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
@@ -26,7 +27,15 @@ class BookGateway(private val repository: BookRepository) : BookGateway {
         return repository.getBooks().map { it.toBooks() }
     }
 
+    override suspend fun insert(book: Book): Result<Unit> {
+        return repository.insert(book.toTransientBook())
+    }
+
     override suspend fun update(book: Book): Result<Unit> {
         return repository.update(book.toEntity())
+    }
+
+    override suspend fun delete(id: String): Result<Unit> {
+        return repository.delete(id)
     }
 }
