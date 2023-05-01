@@ -3,6 +3,7 @@ val logback_version: String by project
 val ktor_version: String by project
 val exposed_version: String by project
 val h2_version: String by project
+val mysql_version: String by project
 
 plugins {
     kotlin("jvm") version "1.8.0"
@@ -44,6 +45,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-java-time:$exposed_version")
+    implementation("com.mysql:mysql-connector-j:$mysql_version")
     implementation("com.h2database:h2:$h2_version")
 
     //Kotlin-Inject
