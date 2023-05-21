@@ -37,7 +37,7 @@ class PostponeBookUseCase(private val gateway: BookGateway) {
         }
     }
 
-    suspend fun postpone(book: Book, ignoreUntil: LocalDateTime?, delay: Delay?): Result<Unit> {
+    suspend fun postpone(book: Book, ignoreUntil: LocalDateTime?, delay: Delay?): Result<Book> {
         val delayDuration = now().plus(delay?.duration ?: Delay.ONE_YEAR.duration)
         val futureDate = ignoreUntil ?: delayDuration.toBrazilianTime()
         return gateway.update(book.copy(ignoreUntil = futureDate))

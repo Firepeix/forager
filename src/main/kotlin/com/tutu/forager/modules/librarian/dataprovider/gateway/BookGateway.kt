@@ -1,21 +1,13 @@
 package com.tutu.forager.modules.librarian.dataprovider.gateway
 
 import com.tutu.forager.modules.librarian.core.domain.Book
-import com.tutu.forager.modules.librarian.core.domain.Library
 import com.tutu.forager.modules.librarian.core.gateway.BookGateway
 import com.tutu.forager.modules.librarian.dataprovider.database.repository.BookRepository
 import com.tutu.forager.modules.librarian.dataprovider.mapper.BookMapper.Companion.toBook
 import com.tutu.forager.modules.librarian.dataprovider.mapper.BookMapper.Companion.toBooks
 import com.tutu.forager.modules.librarian.dataprovider.mapper.BookMapper.Companion.toEntity
 import com.tutu.forager.modules.librarian.dataprovider.mapper.BookMapper.Companion.toTransientBook
-import kotlinx.datetime.Clock
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.plus
-import kotlinx.datetime.toLocalDateTime
 import me.tatarka.inject.annotations.Inject
-import java.util.UUID
-import kotlin.Result.Companion.success
 
 @Inject
 class BookGateway(private val repository: BookRepository) : BookGateway {
@@ -31,8 +23,8 @@ class BookGateway(private val repository: BookRepository) : BookGateway {
         return repository.insert(book.toTransientBook())
     }
 
-    override suspend fun update(book: Book): Result<Unit> {
-        return repository.update(book.toEntity())
+    override suspend fun update(model: Book): Result<Book> {
+        return repository.update(model.toEntity()).map { it.toBook() }
     }
 
     override suspend fun delete(id: String): Result<Unit> {

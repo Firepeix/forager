@@ -30,10 +30,10 @@ inline fun <R, reified T> Result<T>.then(transform: (value: T) -> Result<R>): Re
     }
 }
 
-inline fun <reified R: Any> Result<Any?>.filterNull(exception: BaseException): Result<R> {
+inline fun <reified T> Result<T>.reportNull(exception: BaseException): Result<T & Any> {
     return then { value ->
         value.take(
-            some = { Result.success(it as R) },
+            some = { Result.success(it) },
             none = { Result.failure(exception)}
         )
     }

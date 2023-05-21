@@ -7,7 +7,7 @@ import me.tatarka.inject.annotations.Inject
 @Inject
 class ResumeBookUseCase(private val gateway: BookGateway) {
 
-    suspend fun resume(book: Book): Result<Unit> {
-        return gateway.update(book.copy(ignoreUntil = null))
+    suspend fun resume(book: Book): Result<Book> {
+        return gateway.update(book) { copy(ignoreUntil = null) }
     }
 }

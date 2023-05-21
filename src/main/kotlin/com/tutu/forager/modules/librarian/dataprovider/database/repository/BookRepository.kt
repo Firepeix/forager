@@ -18,7 +18,7 @@ interface BookRepository {
 
     suspend fun insert(entity: TransientBookEntity): Result<Unit>
 
-    suspend fun update(entity: BookEntity): Result<Unit>
+    suspend fun update(entity: BookEntity): Result<BookEntity>
 
     suspend fun delete(id: String): Result<Unit>
 }
@@ -33,14 +33,14 @@ class BookRepositoryImpl : BookRepository {
         runCatching { Books.selectAll().map(::createBookEntity) }
     }
 
-    override suspend fun update(entity: BookEntity): Result<Unit> = query {
+    override suspend fun update(entity: BookEntity): Result<BookEntity> = query {
         runCatching {
             Books.update (where = { id eq entity.id.toInt() }) {
                 it[currentChapter] = entity.currentChapter
                 it[ignoreUntil] = entity.ignoreUntil?.toJavaLocalDateTime()
             }
 
-            Unit
+            entity
         }
     }
 

@@ -3,6 +3,7 @@ package com.tutu.forager.modules.librarian.route
 import com.tutu.forager.modules.librarian.dataprovider.dto.book.BookResponse
 import com.tutu.forager.modules.librarian.dataprovider.dto.book.CreateBookRequest
 import com.tutu.forager.modules.librarian.dataprovider.dto.book.PostponeBookRequest
+import com.tutu.forager.modules.librarian.dataprovider.dto.book.ReadBookRequest
 import com.tutu.forager.modules.librarian.handler.book.BookHandler
 import com.tutu.forager.util.response.ListResponse
 import com.tutu.forager.util.result.ResultHandler.Companion.handle
@@ -34,12 +35,14 @@ fun Route.bookRoutes(bookHandler: BookHandler) {
     put<BookResource.Id.Postpone> { resource ->
         handle(resource.book.postpone(bookHandler, call.receive()))
     }
+
+    put<BookResource.Id.Read> { resource ->
+        handle(resource.book.read(bookHandler, call.receive()))
+    }
 }
 
 @Resource("/$MODULE_PREFIX/books")
 class BookResource {
-    //TODO: ADD - READ / POSTPONE
-
     @Resource("{id}")
     class Id(val root: BookResource, private val id: String) {
 
@@ -49,12 +52,19 @@ class BookResource {
         @Resource("postpone")
         class Postpone(val book: Id)
 
+        @Resource("read")
+        class Read(val book: Id)
+
         suspend fun postpone(handler: BookHandler, request: PostponeBookRequest): Result<Unit> {
-            return handler.postponeBook(id, request)
+            return handler.postponeBook(id, request).map {  }
+        }
+
+        suspend fun read(handler: BookHandler, request: ReadBookRequest): Result<Unit> {
+            return handler.readBook(id, request).map { }
         }
 
         suspend fun resume(handler: BookHandler): Result<Unit> {
-            return handler.resumeBook(id)
+            return handler.resumeBook(id).map {  }
         }
 
         suspend fun delete(handler: BookHandler): Result<Unit> {
